@@ -12,7 +12,10 @@ const templating = require('./templating');
 const cors = require('./koa-cors');
 const rest = require('./rest');
 const verify = require('./verify');
+const serve = require('koa-static');
+const path = require('path');
 
+app.use(serve(path.join(__dirname, '.', 'dist')));
 app.use(cors());
 
 app.use(async(ctx, next) => {
@@ -45,6 +48,5 @@ controller.fun(fs, router);
 app.use(rest.restify());
 app.use(router.routes());
 
-
-app.listen(3000);
-console.log('app start at port 3000...');
+app.listen(80);
+console.log('app start at port 80...');
