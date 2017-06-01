@@ -7,7 +7,7 @@ const upload = multer({dest: './static/upload'});
 const api = require('./api');
 const fs = require('fs');
 var qiniu = require("qiniu");
-let myKey = require("./key");
+let myKey = require("./key.js");
 qiniu.conf.ACCESS_KEY = myKey.qiniu.ACCESS_KEY;
 qiniu.conf.SECRET_KEY = myKey.qiniu.SECRET_KEY;
 

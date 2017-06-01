@@ -1,10 +1,7 @@
 'use strict';
-/**
- * Created by yghysdr on 2017/2/21.
- */
 const Sequelize = require('sequelize');
 const uuid = require('node-uuid');
-const myKey = require('./key');
+const key = require('./key.js');
 
 
 function generateId() {
@@ -12,12 +9,12 @@ function generateId() {
 }
 
 var sequelize = new Sequelize(
-    myKey.mysql.database,
-    myKey.mysql.username,
-    myKey.mysql.password,
+    key.mysql.database,
+    key.mysql.username,
+    key.mysql.password,
     {
-        host: myKey.mysql.host,
-        dialect: myKey.mysql.dialect,
+        host: key.mysql.host,
+        dialect: key.mysql.dialect,
         pool: {
             max: 5,
             min: 0,

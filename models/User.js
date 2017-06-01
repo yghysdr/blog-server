@@ -1,8 +1,5 @@
 'use strict';
-/**
- * Created by yghysdr on 2017/2/21.
- */
-const db = require('../db');
+var db = require('../db');
 
 module.exports = db.defineModel('user', {
     phone: {

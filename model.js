@@ -1,11 +1,11 @@
 'use strict';
 // scan all models defined in models:
 const fs = require('fs');
-const db = require('./db');
+const db = require('./db.js');
 
 let files = fs.readdirSync(__dirname + '/models');
 
-let js_files = files.filter((f)=>{
+let js_files = files.filter((f)=> {
     return f.endsWith('.js');
 }, files);
 

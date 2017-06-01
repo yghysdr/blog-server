@@ -14,7 +14,7 @@ const rest = require('./rest');
 const verify = require('./verify');
 const serve = require('koa-static');
 const path = require('path');
-const key = require('/key');
+const key = require('./key.js');
 
 app.use(serve(path.join(__dirname, '.', 'dist')));
 app.use(cors());
