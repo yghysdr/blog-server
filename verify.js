@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Created by yghysdr on 2017/4/25.
  * 权限判断

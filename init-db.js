@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Created by yghysdr on 2017/2/21.
  * 创建表。在操作表之前先运行此处，创建表。

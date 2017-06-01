@@ -1,3 +1,4 @@
+'use strict';
 /**
  * 支持REST的middleware，给ctx绑定rest
  * 1.添加content-type = application/json
