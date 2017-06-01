@@ -1,3 +1,4 @@
+"use strict";
 var register = require('babel-core/register');
 
 register({

@@ -14,6 +14,7 @@ const rest = require('./rest');
 const verify = require('./verify');
 const serve = require('koa-static');
 const path = require('path');
+const key = require('/key');
 
 app.use(serve(path.join(__dirname, '.', 'dist')));
 app.use(cors());
@@ -48,5 +49,5 @@ controller.fun(fs, router);
 app.use(rest.restify());
 app.use(router.routes());
 
-app.listen(80);
-console.log('app start at port 80...');
+app.listen(key.server.port);
+console.log('app start at port ' + key.server.port + '...');
