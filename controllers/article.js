@@ -7,6 +7,7 @@ const model = require('../model');
 const url = require('url');
 let Article = model.Article;
 let ArticleSort = model.ArticleSort;
+let Sort = model.Sort;
 
 /**
  * 直接 url.parse(ctx.request.url, true).query;
@@ -16,7 +17,7 @@ let ArticleSort = model.ArticleSort;
  * @param ctx
  * @param next
  */
-var fn_article_list = async(ctx, next) => {
+var fn_article_list_get = async(ctx, next) => {
     let params = url.parse(ctx.request.url, true).query;
     let currentPage = params.page * 1 || 1;
     if (currentPage <= 0) {
@@ -44,7 +45,8 @@ var fn_article_list = async(ctx, next) => {
             where: {
                 articleType: type
             },
-            order: [['updatedAt', 'DESC']]
+            order: [['updatedAt', 'DESC']],
+            attributes: ['id', 'title', 'des', '']
         });
     }
     if (article.length < pageSize + 1) {
@@ -54,7 +56,7 @@ var fn_article_list = async(ctx, next) => {
     }
 };
 
-var fn_article = async(ctx, next) => {
+var fn_article_get = async(ctx, next) => {
     let params = url.parse(ctx.request.url, true).query;
     var article = await Article.findOne({
         where: {
@@ -80,8 +82,8 @@ var fn_article_post = async(ctx, next) => {
     });
     for (let sort in sorts) {
         ArticleSort.create({
-            article_id: result.id,
-            sort_id: parseInt(sort, 0)
+            articleId: result.id,
+            sortId: parseInt(sort, 0)
         });
     }
     ctx.rest(article);
@@ -107,20 +109,28 @@ var fn_article_put = async(ctx, next) => {
         }
     );
     await ArticleSort.destroy(
-        {where: {article_id: article.id}}
+        {where: {articleId: article.id}}
     );
     for (let sort in sorts) {
         ArticleSort.create({
-            article_id: article.id,
-            sort_id: parseInt(sort, 0)
+            articleId: article.id,
+            sortId: parseInt(sort, 0)
         });
     }
     ctx.rest(article);
 };
 
+var fn_sort_get = async(ctx, next) => {
+    var result = await Sort.findAll({
+        attributes: ['id', 'name']
+    });
+    ctx.rest(result);
+};
+
 module.exports = {
-    'GET /api/list': fn_article_list,
-    'GET /api/article': fn_article,
+    'GET /api/list': fn_article_list_get,
+    'GET /api/article': fn_article_get,
+    'GET /api/sort': fn_sort_get,
     'POST /api/article': fn_article_post,
     'PUT /api/article': fn_article_put
 };

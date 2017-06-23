@@ -3,13 +3,12 @@
  * Created by yghysdr on 2017/3/24.
  */
 const db = require('../db');
+const Sort = require('./Sort');
+const Article = require('./Article');
 
-const ArticleSort = db.defineModel('article_sort', {
-    article_id: {
-        type: db.ID
-    },
-    sort_id: {
-        type: db.ID
-    }
-});
+
+//articleId, sortId
+const ArticleSort = db.defineModel('article_sort', {});
+ArticleSort.belongsTo(Article);
+ArticleSort.belongsTo(Sort);
 module.exports = ArticleSort;

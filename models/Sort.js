@@ -6,7 +6,7 @@ const db = require('../db');
 
 const Sort = db.defineModel('sort', {
     name: {
-        type: db.STRING
+        type: db.STRING(100)
     }
 });
 module.exports = Sort;

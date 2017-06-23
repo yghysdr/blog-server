@@ -1,12 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
-const uuid = require('node-uuid');
 const key = require('./key.js');
 
-
-function generateId() {
-    return uuid.v4();
-}
 
 var sequelize = new Sequelize(
     key.mysql.database,
@@ -22,7 +17,7 @@ var sequelize = new Sequelize(
         }
     });
 
-const ID_TYPE = Sequelize.STRING(50);
+const ID_TYPE = Sequelize.INTEGER;
 
 function defineModel(name, attributes) {
     var attrs = {};
@@ -40,6 +35,7 @@ function defineModel(name, attributes) {
     }
     attrs.id = {
         type: ID_TYPE,
+        autoIncrement: true,
         primaryKey: true
     };
     attrs.createdAt = {
@@ -83,10 +79,7 @@ function defineModel(name, attributes) {
             beforeValidate: function (obj) {
                 let now = Date.now();
                 if (obj.isNewRecord) {
-                    console.log('will create entity...' + obj);
-                    if (!obj.id) {
-                        obj.id = generateId();
-                    }
+                    console.log('will create entity...');
                     obj.createdAt = now;
                     obj.updatedAt = now;
                     obj.version = 0;
@@ -121,6 +114,5 @@ for (let type of TYPES) {
 }
 
 exp.ID = ID_TYPE;
-exp.generateId = generateId;
 
 module.exports = exp;
