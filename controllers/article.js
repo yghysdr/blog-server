@@ -57,6 +57,7 @@ var fn_article_list_get = async(ctx, next) => {
         let articleListTemp = [];
         for (let i = 0; i < articleList.length; i++) {
             let temp = {};
+            temp.id = articleList[i].article.id;
             temp.title = articleList[i].article.title;
             temp.des = articleList[i].article.des;
             temp.userId = articleList[i].article.userId;
