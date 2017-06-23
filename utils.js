@@ -36,8 +36,21 @@ function getLocalIps(flagIpv6) {
     return ips;
 };
 
+function strToArray(dataStr) {
+    var dataIntArr = [];
+    dataStr = dataStr.replace("[", "");
+    dataStr = dataStr.replace("]", "");
+    var dataStrArr = dataStr.split(",");//分割成字符串数组
+    //保存转换后的整型字符串
+    dataStrArr.forEach(function (data, index, arr) {
+        dataIntArr.push(+data);
+    });
+    return dataIntArr;
+}
+
 module.exports = {
     verify_token: verify_token,
-    getIp: getLocalIps
+    getIp: getLocalIps,
+    strToArray: strToArray
 };
 
