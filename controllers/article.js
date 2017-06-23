@@ -6,6 +6,7 @@
 const model = require('../model');
 const url = require('url');
 let Article = model.Article;
+let ArticleSort = model.ArticleSort;
 
 /**
  * 直接 url.parse(ctx.request.url, true).query;
@@ -70,15 +71,20 @@ var fn_article_post = async(ctx, next) => {
     article.des = ctx.request.body.des || '';
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
-    article.articleType = ctx.request.body.articleType || 0;
+    let sorts = ctx.request.body.articleType || [0];
     let result = await Article.create({
         title: article.title,
         des: article.des,
         content: article.content,
-        userId: article.userId,
-        articleType: article.articleType
+        userId: article.userId
     });
-    ctx.rest(result);
+    for (let sort in sorts) {
+        ArticleSort.create({
+            article_id: result.id,
+            sort_id: parseInt(sort, 0)
+        });
+    }
+    ctx.rest(article);
 };
 
 var fn_article_put = async(ctx, next) => {
@@ -88,19 +94,28 @@ var fn_article_put = async(ctx, next) => {
     article.des = ctx.request.body.des || '';
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
-    article.articleType = ctx.request.body.articleType || 0;
-    let result = await Article.update({
+    let sorts = ctx.request.body.articleType || [0];
+    await Article.update(
+        {
             title: article.title,
             des: article.des,
             content: article.content,
-            articleType: article.articleType,
             updatedAt: Date.now()
         },
         {
             where: {id: article.id}
         }
     );
-    ctx.rest(result);
+    await ArticleSort.destroy(
+        {where: {article_id: article.id}}
+    );
+    for (let sort in sorts) {
+        ArticleSort.create({
+            article_id: article.id,
+            sort_id: parseInt(sort, 0)
+        });
+    }
+    ctx.rest(article);
 };
 
 module.exports = {

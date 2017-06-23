@@ -15,9 +15,6 @@ const Article = db.defineModel('article', {
     },
     content: {
         type: Sequelize.TEXT
-    },
-    articleType: {
-        type: Sequelize.INTEGER
     }
 });
 Article.belongsTo(User);
