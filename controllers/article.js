@@ -38,14 +38,18 @@ var fn_article_list_get = async(ctx, next) => {
             limit: pageSize + 1,
             offset: (currentPage - 1) * pageSize,
             order: [['updatedAt', 'DESC']],
-            attributes: ['id', 'title', 'des', 'userId']
+            attributes: ['id', 'title', 'des', 'userId', 'updatedAt'],
+            where: {
+                id: {$ne: 0}
+            }
         });
     } else {
         articleList = await ArticleSort.findAll({
             limit: pageSize + 1,
             offset: (currentPage - 1) * pageSize,
             where: {
-                sortId: type
+                sortId: type,
+                id: {$ne: 0}
             },
             attributes: ['sortId'],
             include: {
@@ -76,7 +80,7 @@ var fn_article_get = async(ctx, next) => {
     let params = url.parse(ctx.request.url, true).query;
     var article = await Article.findOne({
         where: {
-            id: params.id || '0'
+            id: params.id || 0
         }
     });
     console.log(params.id);
@@ -89,7 +93,7 @@ var fn_article_post = async(ctx, next) => {
     article.des = ctx.request.body.des || '';
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
-    var sorts = ctx.request.body.articleType || [0];
+    var sorts = ctx.request.body.type || [0];
     let result = await Article.create({
         title: article.title,
         des: article.des,
@@ -115,7 +119,7 @@ var fn_article_put = async(ctx, next) => {
     article.des = ctx.request.body.des || '';
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
-    let sorts = ctx.request.body.articleType || [0];
+    let sorts = ctx.request.body.type || [0];
     await Article.update(
         {
             title: article.title,
@@ -149,10 +153,62 @@ var fn_sort_get = async(ctx, next) => {
     ctx.rest(result);
 };
 
+var fn_sort_data_get = async(ctx, next)=> {
+    var sorts = await Sort.findAll({
+        attributes: ['id', 'name']
+    });
+    let result = [];
+    for (let i = 0; i < sorts.length; i++) {
+        let data = {};
+        data.name = sorts[i].name;
+        data.id = sorts[i].id;
+        let temp = await ArticleSort.findAndCountAll({
+            where: {
+                sortId: sorts[i].id,
+                id: {$ne: 0}
+            }
+        });
+        data.count = temp.count;
+        result.push(data)
+    }
+    ctx.rest(result);
+};
+
+var fn_archive_get = async(ctx, next) => {
+    var result = await Article.findAll({
+        order: [['createdAt', 'DESC']],
+        attributes: ['id', 'title', 'createdAt']
+    });
+    let archiveList = [];
+    let archive = {
+        year: '',
+        articleList: []
+    };
+    let year = new Date(result[0].createdAt).getFullYear();
+    for (let i = 0; i < result.length; i++) {
+        var date = new Date(result[i].createdAt);
+        let tempYear = date.getFullYear();
+        if (tempYear !== year) {
+            archiveList.push(archive);
+            archive = {
+                year: '',
+                articleList: []
+            };
+        }
+        archive.year = result[i].createdAt;
+        archive.articleList.push(result[i]);
+        year = tempYear;
+    }
+    archiveList.push(archive);
+    ctx.rest(archiveList);
+};
+
 module.exports = {
     'GET /api/list': fn_article_list_get,
     'GET /api/article': fn_article_get,
     'GET /api/sort': fn_sort_get,
+    'GET /api/sortData': fn_sort_data_get,
+    'GET /api/archive': fn_archive_get,
     'POST /api/article': fn_article_post,
     'PUT /api/article': fn_article_put
 };
