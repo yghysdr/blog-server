@@ -120,7 +120,7 @@ var fn_article_put = async(ctx, next) => {
     article.des = ctx.request.body.des || '';
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
-    let sorts = ctx.request.body.type || [0];
+    let sorts = ctx.request.body.type || [1000];
     await Article.update(
         {
             title: article.title,
@@ -141,7 +141,7 @@ var fn_article_put = async(ctx, next) => {
     for (let sort in sorts) {
         ArticleSort.create({
             articleId: article.id,
-            sortId: parseInt(sort, 0)
+            sortId: parseInt(sort, 1000)
         });
     }
     ctx.rest(article);
@@ -149,14 +149,17 @@ var fn_article_put = async(ctx, next) => {
 
 var fn_sort_get = async(ctx, next) => {
     var result = await Sort.findAll({
-        attributes: ['id', 'name']
+        attributes: ['id', 'name'],
+        where: {
+            id: {$ne: 1000}
+        }
     });
     ctx.rest(result);
 };
 
 var fn_sort_data_get = async(ctx, next)=> {
     var sorts = await Sort.findAll({
-        attributes: ['id', 'name']
+        attributes: ['id', 'name'],
     });
     let result = [];
     for (let i = 0; i < sorts.length; i++) {
