@@ -55,7 +55,7 @@ var fn_article_list_get = async(ctx, next) => {
             include: {
                 model: Article,
                 order: [['updatedAt', 'DESC']],
-                attributes: ['id', 'title', 'des', 'userId']
+                attributes: ['id', 'title', 'des', 'userId', 'updatedAt']
             }
         });
         let articleListTemp = [];
