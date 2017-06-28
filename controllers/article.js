@@ -103,13 +103,14 @@ var fn_article_post = async(ctx, next) => {
     if (typeof sorts === "string") {
         sorts = utils.strToArray(sorts);
     }
-    for (let sort in sorts) {
+    sorts = utils.arrayUniq(sorts);
+    for (let i = 0; i < sorts.length; i++) {
         ArticleSort.create({
             articleId: result.id,
-            sortId: parseInt(sort, 0)
+            sortId: parseInt(sorts[i], 0)
         });
     }
-    ctx.rest(result);
+    ctx.rest(sorts);
 };
 
 var fn_article_put = async(ctx, next) => {
