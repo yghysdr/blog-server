@@ -1,4 +1,5 @@
 'use strict';
+const fs = require('fs');
 
 function addMapping(router, mapping) {
     for (let url in mapping) {
@@ -20,7 +21,7 @@ function addMapping(router, mapping) {
     }
 }
 
-function addControllers(fs, router) {
+function addControllers(router) {
     var files = fs.readdirSync(__dirname + '/controllers');
     var js_files = files.filter((f)=> {
         return f.endsWith('.js');

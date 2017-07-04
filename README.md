@@ -11,11 +11,14 @@ vue  vuex  vue-router  vue-resource
 |application/json|支持|
 |multipart/form-data|只有提交文件时支持，其他不支持|
 
-## V1.0 介绍
+## 计划
+### V1.0 介绍
 - 文章的创建，修改
 - 文章分类查看
 - 归档
-## V2.0 计划
+### V2.0 计划
 - 文章评论
 - 数据统计
 
+## 开发日志
+优化代码，去掉冗余代码
