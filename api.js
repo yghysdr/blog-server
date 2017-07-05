@@ -1,9 +1,7 @@
 'use strict';
 
-let baseFileUrl = "http://oqlwlmr6l.bkt.clouddn.com/";
+let baseFileUrl = "http://blog.yghysdr.cn/";
 
 module.exports = {
-    // baseUrl: baseUrl,
-    // base: base,
     baseFileUrl: baseFileUrl
 };
