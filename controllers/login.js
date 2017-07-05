@@ -20,7 +20,6 @@ var fn_login = async(ctx, next)=> {
     });
     if (user !== null && password === user.password) {
         ctx.rest({
-            msg: '登入成功',
             token: user.token,
             uid: user.id,
             avatar: api.baseFileUrl + user.avatar
@@ -29,7 +28,8 @@ var fn_login = async(ctx, next)=> {
         ctx.response.type = 'application/json';
         ctx.response.body = {
             code: 1,
-            data: "登入失败",
+            data: {},
+            msg: "登入失败",
             haveMore: false
         }
     }
