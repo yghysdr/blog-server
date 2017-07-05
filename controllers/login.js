@@ -19,6 +19,7 @@ var fn_login = async(ctx, next)=> {
         }
     });
     if (user !== null && password === user.password) {
+        user.avatar = api.baseFileUrl + user.avatar;
         ctx.rest(user);
     } else {
         ctx.response.type = 'application/json';
