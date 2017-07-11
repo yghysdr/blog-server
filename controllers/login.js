@@ -18,10 +18,24 @@ var fn_login = async(ctx, next)=> {
             phone: phone
         }
     });
+    /**
+     "phone": "18301247317",
+     "password": "462136c56d6e53732cb957fa1cbfd5b1",
+     "token": "310f71a6482a1a15acc8bf2ea99941fb",
+     "avatar": "http://blog.yghysdr.cn/74d26faeeb49c05903c40c7ffc1a7089",
+     "signature": "",
+     "nick": "一个很严肃的人",
+     "id": 1,
+     */
     if (user !== null && password === user.password) {
-        user.avatar = api.baseFileUrl + user.avatar;
-        user.uid = user.id;
-        ctx.rest(user);
+        let data = {};
+        data.uid = user.id;
+        data.phone = user.phone;
+        data.token = user.token;
+        data.avatar = api.baseFileUrl + user.avatar;
+        data.nick = user.nick;
+        data.signature = user.signature;
+        ctx.rest(data);
     } else {
         ctx.response.type = 'application/json';
         ctx.response.body = {
@@ -32,36 +46,6 @@ var fn_login = async(ctx, next)=> {
         }
     }
 };
-//上传的是base64（不再使用）
-// var fn_avatar = async(ctx, next) => {
-//     var avatar = ctx.request.files;
-//     let path = 'static/img/avatar.jpg';
-//     if (avatar) {
-//         fs.writeFile(path, avatar, 'base64', function (err) {
-//                 if (err) {
-//                     console.log(err);
-//                     avatar_fail(ctx);
-//                 }
-//             }
-//         );
-//         ctx.rest({
-//             msg: '图片上传成功'
-//         });
-//     } else {
-//         avatar_fail(ctx);
-//     }
-// };
-//
-//
-// function avatar_fail(ctx) {
-//     console.log('上传失败');
-//     ctx.response.type = 'application/json';
-//     ctx.response.body = {
-//         code: 1,
-//         data: "图片上传失败",
-//         haveMore: false
-//     }
-// }
 
 var fn_avatar = async(ctx, next) => {
     await User.update({
