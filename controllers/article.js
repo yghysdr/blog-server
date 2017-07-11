@@ -95,6 +95,14 @@ var fn_article_post = async(ctx, next) => {
     article.content = ctx.request.body.content || '';
     article.userId = ctx.request.body.userId || 1;
     var sorts = ctx.request.body.type || [0];
+    if (article.title === '' || article.des === '' || article.content == '') {
+        ctx.body = {
+            code: 1,
+            data: {},
+            msg: "提交失败",
+            haveMore: false
+        }
+    }
     let result = await Article.create({
         title: article.title,
         des: article.des,
