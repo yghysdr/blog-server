@@ -101,7 +101,8 @@ var fn_article_post = async(ctx, next) => {
             data: {},
             msg: "提交失败",
             haveMore: false
-        }
+        };
+        return;
     }
     let result = await Article.create({
         title: article.title,
