@@ -20,6 +20,7 @@ var fn_login = async(ctx, next)=> {
     });
     if (user !== null && password === user.password) {
         user.avatar = api.baseFileUrl + user.avatar;
+        user.uid = user.id;
         ctx.rest(user);
     } else {
         ctx.response.type = 'application/json';
