@@ -195,23 +195,23 @@ var fn_archive_get = async(ctx, next) => {
     });
     let archiveList = [];
     let archive = {
-        year: '',
+        timestamp: '',
         articleList: []
     };
-    let year = new Date(result[0].createdAt).getFullYear();
+    let mouth = new Date(result[0].createdAt).getMonth();
     for (let i = 0; i < result.length; i++) {
         var date = new Date(result[i].createdAt);
-        let tempYear = date.getFullYear();
-        if (tempYear !== year) {
+        let tempMouth = date.getMonth();
+        if (tempMouth !== mouth) {
             archiveList.push(archive);
             archive = {
-                year: '',
+                timestamp: '',
                 articleList: []
             };
         }
-        archive.year = result[i].createdAt;
+        archive.timestamp = result[i].createdAt;
         archive.articleList.push(result[i]);
-        year = tempYear;
+        mouth = tempMouth;
     }
     archiveList.push(archive);
     ctx.rest(archiveList);
