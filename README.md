@@ -22,3 +22,4 @@ vue  vuex  vue-router  vue-resource
 
 ## 开发日志
 优化代码，去掉冗余代码
+修改/api/archive接口
