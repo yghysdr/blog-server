@@ -5,6 +5,7 @@ koa2 + mysql
 - web
 vue  vuex  vue-router  vue-resource
 - body数据提交方式
+
 |body提交方式|支持情况|
 |----|----|
 |application/x-www-form-urlencoded|支持|
